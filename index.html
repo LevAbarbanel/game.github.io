@@ -5,85 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>המשחק המשגע</title>
     <link rel="icon" type="image/x-icon" href="./images/tic.png">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Varela Round', Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 20px;
+            animation: floatHeart 15s linear infinite;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .widget-container {
-            background-color: #333333;
-            border-radius: 16px;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
             width: 400px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: 1px solid #666666;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .love-glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,0,128,0.3) 0%, rgba(255,0,128,0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
         }
 
         .widget-title {
             text-align: center;
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
-            margin-bottom: 24px;
+            margin-bottom: 30px;
+            position: relative;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(255, 0, 128, 0.5);
         }
+
+           
 
         .counter-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 15px;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
+            .counter-row:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 7px 15px rgba(0, 0, 0, 0.1);
+            }
+
         .counter-label {
-            font-size: 24px;
+            font-size: 28px;
             text-align: center;
             flex-grow: 1;
             padding: 10px 0;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .counter-button {
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b8b, #ff3366);
+            border: none;
             border-radius: 50%;
             cursor: pointer;
             color: white;
-            font-size: 28px;
+            font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
         }
 
-            .counter-button:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+            .counter-button::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 border-radius: 50%;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+                z-index: 0;
+            }
+
+            .counter-button i {
+                position: relative;
+                z-index: 1;
+            }
+
+            .counter-button:hover {
+                transform: scale(1.1);
+                box-shadow: 0 10px 20px rgba(255, 51, 102, 0.5);
             }
 
             .counter-button:active {
-                background-color: rgba(255, 255, 255, 0.2);
+                transform: scale(0.95);
             }
 
-        .main-counter-button {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
-
-            .main-counter-button:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
 
         .loading-indicator {
             position: absolute;
@@ -91,61 +178,125 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(255, 105, 180, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             font-weight: bold;
-            border-radius: 16px;
+            border-radius: 24px;
             display: none;
+            flex-direction: column;
+            backdrop-filter: blur(5px);
         }
 
         .widget-wrapper {
             position: relative;
+            z-index: 2;
         }
 
-        @keyframes spin {
+        @keyframes heartbeat {
             0% {
-                transform: rotate(0deg);
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.3);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.3);
+            }
+
+            60% {
+                transform: scale(1);
             }
 
             100% {
-                transform: rotate(360deg);
+                transform: scale(1);
             }
         }
 
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid white;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
+        .heart-spinner {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 15px;
+            animation: heartbeat 1.5s infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .counter-value {
+            transition: all 0.5s ease;
+        }
+
+        .score-updated {
+            animation: pop 0.5s ease;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Mini floating hearts when clicking buttons */
+        .mini-heart {
+            position: absolute;
+            pointer-events: none;
+            color: white;
+            font-size: 15px;
+            animation: floatUp 1.5s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), -100px) rotate(var(--r));
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="hearts-bg" id="hearts-background"></div>
+
     <div class="widget-wrapper">
+        <div class="love-glow" id="love-glow"></div>
         <div class="widget-container">
             <div class="widget-title">המשחק המשגע</div>
 
-            <div class="counter-row">
-                <button class="counter-button" id="hilit-down">-</button>
-                <div class="counter-label" id="hilit-label">הילית: 0</div>
-                <button class="counter-button" id="hilit-up">+</button>
+            <div class="counter-row" id="hilit-row">
+                <button class="counter-button" id="hilit-down"><i class="fas fa-heart" style="transform: rotate(180deg);"></i></button>
+                <div class="counter-label" id="hilit-label">הילית: <span class="counter-value" id="hilit-value">0</span></div>
+                <button class="counter-button" id="hilit-up"><i class="fas fa-heart"></i></button>
             </div>
 
-            <div class="counter-row">
-                <button class="counter-button" id="lev-down">-</button>
-                <div class="counter-label" id="lev-label">לב: 0</div>
-                <button class="counter-button" id="lev-up">+</button>
+            <div class="counter-row" id="lev-row">
+                <button class="counter-button" id="lev-down"><i class="fas fa-heart" style="transform: rotate(180deg);"></i></button>
+                <div class="counter-label" id="lev-label">לב: <span class="counter-value" id="lev-value">0</span></div>
+                <button class="counter-button" id="lev-up"><i class="fas fa-heart"></i></button>
             </div>
         </div>
         <div class="loading-indicator">
-            <div class="spinner"></div>
-            <div>מתעדכן...</div>
+            <div class="heart-spinner"><i class="fas fa-heart"></i></div>
+            <div>מתעדכן באהבה...</div>
         </div>
     </div>
 
@@ -153,7 +304,7 @@
         // API URL from the original code
         const API_URL = "https://x8ki-letl-twmt.n7.xano.io/api:sizyTD43/hilit";
 
-        // Local counters for immediate UI feedback (like in the original)
+        // Local counters for immediate UI feedback
         let localHilitCounter = 0;
         let localLevCounter = 0;
         let recordId = 1;
@@ -163,24 +314,77 @@
         // DOM elements
         const hilitLabel = document.getElementById('hilit-label');
         const levLabel = document.getElementById('lev-label');
+        const hilitValue = document.getElementById('hilit-value');
+        const levValue = document.getElementById('lev-value');
         const hilitUpBtn = document.getElementById('hilit-up');
         const hilitDownBtn = document.getElementById('hilit-down');
         const levUpBtn = document.getElementById('lev-up');
         const levDownBtn = document.getElementById('lev-down');
-        const hilitMainBtn = document.getElementById('hilit-main-btn');
-        const levMainBtn = document.getElementById('lev-main-btn');
         const loadingIndicator = document.querySelector('.loading-indicator');
+        const loveGlow = document.getElementById('love-glow');
+        const heartsBackground = document.getElementById('hearts-background');
+
+        // Create floating heart background
+        function createHeartBackground() {
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '&#x2764;';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (15 + Math.random() * 20) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.opacity = 0.1 + Math.random() * 0.5;
+                heart.style.fontSize = (10 + Math.random() * 30) + 'px';
+                heartsBackground.appendChild(heart);
+            }
+        }
 
         // Update widget UI with new counter values
         function updateWidgetUI() {
-            hilitLabel.textContent = `הילית: ${localHilitCounter}`;
-            levLabel.textContent = `לב: ${localLevCounter}`;
+            hilitValue.textContent = localHilitCounter;
+            levValue.textContent = localLevCounter;
         }
 
         // Show/hide loading indicator
         function setLoading(isLoading) {
             loadingIndicator.style.display = isLoading ? 'flex' : 'none';
             updateInProgress = isLoading;
+        }
+
+        // Create mini hearts animation when clicking buttons
+        function createMiniHearts(x, y, isPositive) {
+            const numHearts = 8;
+
+            for (let i = 0; i < numHearts; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'mini-heart';
+                heart.innerHTML = '&#x2764;';
+                heart.style.transform = isPositive ? 'rotate(0deg)' : 'rotate(180deg)'; // normal or upside-down heart
+                heart.style.left = x + 'px';
+                heart.style.top = y + 'px';
+
+                // Random direction
+                const tx = (Math.random() - 0.5) * 100;
+                const r = (Math.random() - 0.5) * 360;
+
+                heart.style.setProperty('--tx', tx + 'px');
+                heart.style.setProperty('--r', r + 'deg');
+
+                document.body.appendChild(heart);
+
+                // Remove the element after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 1500);
+            }
+        }
+
+        // Animate counter value
+        function animateCounterUpdate(counterElement) {
+            counterElement.classList.add('score-updated');
+            setTimeout(() => {
+                counterElement.classList.remove('score-updated');
+            }, 500);
         }
 
         // Fetch counter data from API
@@ -226,6 +430,18 @@
 
             setLoading(true);
 
+            // Get click position for the mini hearts
+            const button = isHilit ?
+                (isIncrement ? hilitUpBtn : hilitDownBtn) :
+                (isIncrement ? levUpBtn : levDownBtn);
+
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            // Create mini hearts animation
+            createMiniHearts(x, y, isIncrement);
+
             // Update local counters immediately for responsive UI
             if (isHilit) {
                 if (isIncrement) {
@@ -233,12 +449,14 @@
                 } else if (localHilitCounter > 0) {
                     localHilitCounter--;
                 }
+                animateCounterUpdate(hilitValue);
             } else {
                 if (isIncrement) {
                     localLevCounter++;
                 } else if (localLevCounter > 0) {
                     localLevCounter--;
                 }
+                animateCounterUpdate(levValue);
             }
 
             // Update UI immediately with local values
@@ -257,7 +475,7 @@
                     ? (isIncrement ? currentData.levCounter + 1 : Math.max(0, currentData.levCounter - 1))
                     : currentData.levCounter;
 
-                // Prepare PATCH request (as in original code)
+                // Prepare PATCH request
                 const updateUrl = `${API_URL}/${currentData.id}`;
                 console.log(`Updating counter at URL: ${updateUrl}`);
 
@@ -299,20 +517,31 @@
             }
         }
 
+        // Moving love glow effect following cursor
+        function moveGlow(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            loveGlow.style.left = (x - 75) + 'px';
+            loveGlow.style.top = (y - 75) + 'px';
+        }
+
         // Initialize event listeners
         function initEventListeners() {
-            // Main buttons removed
-
             // Up/down buttons
             hilitUpBtn.addEventListener('click', () => updateCounter(true, true));
             hilitDownBtn.addEventListener('click', () => updateCounter(true, false));
             levUpBtn.addEventListener('click', () => updateCounter(false, true));
             levDownBtn.addEventListener('click', () => updateCounter(false, false));
+
+            // Love glow following cursor
+            document.addEventListener('mousemove', moveGlow);
         }
 
         // Fetch data initially
         async function initialize() {
             setLoading(true);
+            createHeartBackground();
             try {
                 await fetchCounterData();
             } catch (error) {
@@ -322,7 +551,7 @@
             }
         }
 
-        // Set up periodic refresh (like in original)
+        // Set up periodic refresh
         function startPeriodicRefresh() {
             setInterval(async () => {
                 if (!updateInProgress) {
@@ -332,7 +561,7 @@
                         console.error("Error in periodic refresh:", error);
                     }
                 }
-            }, 6000); // 6 seconds, like in original
+            }, 6000);
         }
 
         // Initialize
